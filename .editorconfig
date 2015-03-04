@@ -1,0 +1,33 @@
+# EditorConfig is awesome: http://EditorConfig.org
+
+# top-most EditorConfig file
+root = true
+
+# Unix-style newlines with a newline ending every file
+[*]
+end_of_line = lf
+insert_final_newline = true
+
+# Stylus
+[*.styl]
+indent_style = tab
+
+# CSS
+[*.css]
+indent_style = tab
+
+# JavaScript
+[*.js]
+indent_style = tab
+
+# Jedi
+[*.jedi]
+indent_style = tab
+
+# PHP
+[*.php]
+insert_final_newline = false
+
+# HTML
+[*.html]
+insert_final_newline = false

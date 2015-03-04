@@ -12,6 +12,7 @@ require('es6-promise').polyfill()
  * @param  {object}        options validate config
  * @return {Promise}               promise then resolve object/buffer/stream
  */
+
 function editorconfigValidate(file, options) {
 	var promiseFile = null
 	if (typeof file === 'string') {

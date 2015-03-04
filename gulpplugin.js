@@ -16,12 +16,12 @@ function editorconfig(options) {
 		}
 		validate(file, options).then(function (report) {
 			if (report) {
-				self.emit('report', report)
+				self.emit('report', report, file.path)
 				self.push(file)
 				return next()
 			}
 		}).catch(function (err) {
-			self.emit('error', err)
+			self.emit('error', err, file.path)
 		})
 	}
 	return stream

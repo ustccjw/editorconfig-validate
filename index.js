@@ -3,8 +3,8 @@
 var isReadable = require('isstream').isReadable
 var fs = require('mz/fs')
 var editorconfig = require('editorconfig')
+var Promise = require('native-or-bluebird')
 var validate = require('./lib/validate')
-require('es6-promise').polyfill()
 
 /**
  * make file validate via .editorconfig or customed rules

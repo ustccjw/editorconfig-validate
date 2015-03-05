@@ -7,10 +7,10 @@ var validate = require('./lib/validate')
 require('es6-promise').polyfill()
 
 /**
- * make file validate via .editorconfig or config
- * @param  {string|object} file    filePath/vinyl
- * @param  {object}        options validate config
- * @return {Promise}               promise then resolve object/buffer/stream
+ * make file validate via .editorconfig or customed rules
+ * @param  {string|object} file    filePath/vinyl File
+ * @param  {object}        options customed rules
+ * @return {object}                promise then resolve validate result(object)
  */
 
 function editorconfigValidate(file, options) {
@@ -21,14 +21,19 @@ function editorconfigValidate(file, options) {
 		})
 	} else if (typeof file === 'object') {
 		promiseFile = Promise.resolve(file.contents)
+	} else {
+		promiseFile = Promise.reject(new Error('arguments error: file should be filepath or vinyl file'))
 	}
 
 	var promiseConfig = null
 	if (typeof options === 'object') {
 		promiseConfig = Promise.resolve(options)
+	} else if (typeof file === 'object' && typeof file.path === 'string') {
+		promiseConfig = editorconfig.parse(file.path)
+	} else if (typeof file === 'string') {
+		promiseConfig = editorconfig.parse(file)
 	} else {
-		var path = typeof file === 'object' ? file.path : file
-		promiseConfig = editorconfig.parse(path)
+		promiseConfig = Promise.reject(new Error('arguments error: file should be filepath or vinyl file'))
 	}
 
 	return Promise.all([promiseFile, promiseConfig]).then(function (response) {

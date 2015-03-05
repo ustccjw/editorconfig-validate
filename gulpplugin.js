@@ -1,8 +1,9 @@
 'use strict'
 
 var Transform = require('readable-stream').Transform
-var validate = require('./index')
+var editorconfigValidate = require('./index')
 
+// options can set customed rules
 function gulpValidate(options) {
 	var stream = new Transform({
 		objectMode: true
@@ -14,12 +15,10 @@ function gulpValidate(options) {
 		if (file.isStream()) {
 			file.contents.on('error', self.emit.bind(self, 'error'))
 		}
-		validate(file, options).then(function (report) {
-			if (report) {
-				self.emit('report', report, file.path)
-				self.push(file)
-				return next()
-			}
+		editorconfigValidate(file, options).then(function (report) {
+			self.emit('report', report, file.path)
+			self.push(file)
+			return next()
 		}).catch(function (err) {
 			self.emit('error', err, file.path)
 		})

@@ -28,9 +28,10 @@
     "detect-newline": "^1.0.3",
     "editorconfig": "^0.12.1",
     "es6-promise": "^2.0.1",
+    "iconv-lite": "^0.4.7",
     "isstream": "^0.1.1",
-    "jschardet": "^1.1.0",
     "mz": "^1.3.0",
+    "node-icu-charset-detector": "^0.1.0",
     "readable-stream": "^1.0.33",
     "repeating": "^1.1.2"
   },

@@ -1,0 +1,1 @@
+test insert_final_newline

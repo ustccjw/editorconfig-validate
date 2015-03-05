@@ -16,7 +16,7 @@ require('es6-promise').polyfill()
 function editorconfigValidate(file, options) {
 	var promiseFile = null
 	if (typeof file === 'string') {
-		promiseFile = fs.readFile(file, 'utf8').then(function (fileContents) {
+		promiseFile = fs.readFile(file).then(function (fileContents) {
 			return fileContents
 		})
 	} else if (typeof file === 'object') {
@@ -39,24 +39,22 @@ function editorconfigValidate(file, options) {
 	return Promise.all([promiseFile, promiseConfig]).then(function (response) {
 		var contents = response[0]
 		var config = response[1]
-		if (typeof contents === 'string') {
-			return validate(contents, config)
-		}
+
 		if (Buffer.isBuffer(contents)) {
-			return validate(contents.toString(), config)
+			return validate(contents, config)
 		}
 		if (isReadable(contents)) {
 			return new Promise(function (resolve, reject) {
-				var source = ''
-				contents.setEncoding('utf8')
+				var buffers = []
+				contents.setEncoding(null)
 				contents.on('readable', function () {
-					var str = contents.read()
-					if (str !== null) {
-						source += str
+					var buffer = contents.read()
+					if (buffer !== null) {
+						buffers.push(buffer)
 					}
 				})
 				contents.on('end', function () {
-					resolve(validate(source, config))
+					resolve(validate(Buffer.concat(buffers), config))
 				})
 			})
 		}

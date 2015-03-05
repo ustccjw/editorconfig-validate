@@ -14,26 +14,30 @@ require('es6-promise').polyfill()
  */
 
 function editorconfigValidate(file, options) {
+	var path = null
+	if (typeof file === 'string') {
+		path = file
+	} else if (typeof file === 'object') {
+		path = file.path
+	}
+	if (typeof path !== 'string') {
+		return Promise.reject(new Error('arguments error: file should be file path or vinyl file'))
+	}
+
 	var promiseFile = null
 	if (typeof file === 'string') {
 		promiseFile = fs.readFile(file).then(function (fileContents) {
 			return fileContents
 		})
-	} else if (typeof file === 'object') {
-		promiseFile = Promise.resolve(file.contents)
 	} else {
-		promiseFile = Promise.reject(new Error('arguments error: file should be filepath or vinyl file'))
+		promiseFile = Promise.resolve(file.contents)
 	}
 
 	var promiseConfig = null
 	if (typeof options === 'object') {
 		promiseConfig = Promise.resolve(options)
-	} else if (typeof file === 'object' && typeof file.path === 'string') {
-		promiseConfig = editorconfig.parse(file.path)
-	} else if (typeof file === 'string') {
-		promiseConfig = editorconfig.parse(file)
 	} else {
-		promiseConfig = Promise.reject(new Error('arguments error: file should be filepath or vinyl file'))
+		promiseConfig = editorconfig.parse(filePath)
 	}
 
 	return Promise.all([promiseFile, promiseConfig]).then(function (response) {

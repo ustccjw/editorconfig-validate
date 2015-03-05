@@ -27,6 +27,7 @@ describe('validate indent', function () {
 			indent_style: 'space',
 			indent_size: 4
 		}).then(function (report) {
+			console.log(report)
 			var res = {
 				'10': [{
 					type: 'indent_style',
@@ -42,7 +43,9 @@ describe('validate indent', function () {
 			assert(JSON.stringify(report) === JSON.stringify(res))
 		})
 	})
+})
 
+describe('validate end_of_line', function () {
 	it('should report end_of_line error', function () {
 		return editorconfigValidate(path.resolve(dir, 'end_of_line.js'), {
 			end_of_line: 'crlf'
@@ -57,7 +60,9 @@ describe('validate indent', function () {
 			assert(JSON.stringify(report) === JSON.stringify(res))
 		})
 	})
+})
 
+describe('validate insert_final_newline', function () {
 	it('should report insert_final_newline error', function () {
 		return editorconfigValidate(path.resolve(dir, 'insert_final_newline.js'), {
 			insert_final_newline: 'false'
@@ -72,7 +77,9 @@ describe('validate indent', function () {
 			assert(JSON.stringify(report) === JSON.stringify(res))
 		})
 	})
+})
 
+describe('validate trim_trailing_whitespace', function () {
 	it('should report trim_trailing_whitespace error', function () {
 		return editorconfigValidate(path.resolve(dir, 'trim_trailing_whitespace.js'), {
 			trim_trailing_whitespace: 'true'
@@ -92,8 +99,10 @@ describe('validate indent', function () {
 			assert(JSON.stringify(report) === JSON.stringify(res))
 		})
 	})
+})
 
-	it('should report charset error', function () {
+describe('validate charset', function () {
+	it('should not report charset error', function () {
 		return editorconfigValidate(path.resolve(dir, 'charset.js'), {
 			charset: 'utf-8'
 		}).then(function (report) {

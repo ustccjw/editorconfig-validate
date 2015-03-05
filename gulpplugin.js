@@ -4,7 +4,7 @@ var Transform = require('readable-stream').Transform
 var editorconfigValidate = require('./index')
 
 // options can set customed rules
-function gulpValidate(options) {
+function gulpEditorconfigValidate(options) {
 	var stream = new Transform({
 		objectMode: true
 	})
@@ -26,4 +26,4 @@ function gulpValidate(options) {
 	return stream
 }
 
-module.exports = gulpValidate
+module.exports = gulpEditorconfigValidate

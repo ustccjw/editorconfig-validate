@@ -2,7 +2,9 @@
 
 var assert = require('assert')
 var path = require('path')
+var gulp = require('gulp')
 var editorconfigValidate = require('../index')
+var gulpEditorconfigValidate = require('../gulpplugin')
 
 var dir = path.resolve(__dirname, 'dir')
 
@@ -27,7 +29,6 @@ describe('validate indent', function () {
 			indent_style: 'space',
 			indent_size: 4
 		}).then(function (report) {
-			console.log(report)
 			var res = {
 				'10': [{
 					type: 'indent_style',
@@ -108,6 +109,31 @@ describe('validate charset', function () {
 		}).then(function (report) {
 			var res = null
 			assert(JSON.stringify(report) === JSON.stringify(res))
+		})
+	})
+})
+
+describe('validate gulp && editorconfig', function () {
+	it('should always ok', function (done) {
+		var stream = gulp.src([
+			'../**/*.js',
+			'!../node_modules/**/*',
+			'!./dir/*'
+		], {
+			cwd: path.resolve(__dirname)
+		}).
+		pipe(gulpEditorconfigValidate()).
+		on('report', function (report, path) {
+			if (report !== null) {
+				console.log(report, path)
+			}
+			assert(report === null)
+		}).
+		on('error', function (err, path) {
+			console.error(err, path)
+		}).
+		on('finish', function () {
+			done()
 		})
 	})
 })

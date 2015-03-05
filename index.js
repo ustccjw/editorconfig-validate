@@ -37,7 +37,7 @@ function editorconfigValidate(file, options) {
 	if (typeof options === 'object') {
 		promiseConfig = Promise.resolve(options)
 	} else {
-		promiseConfig = editorconfig.parse(filePath)
+		promiseConfig = editorconfig.parse(path)
 	}
 
 	return Promise.all([promiseFile, promiseConfig]).then(function (response) {

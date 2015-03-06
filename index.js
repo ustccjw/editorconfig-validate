@@ -62,7 +62,7 @@ function editorconfigValidate(file, options) {
 					} catch (err) {
 						return reject(err)
 					}
-					resolve(report)
+					return resolve(report)
 				})
 			})
 		}

@@ -120,7 +120,8 @@ describe('validate gulp && editorconfig', function () {
 			'!../node_modules/**/*',
 			'!./dir/*'
 		], {
-			cwd: path.resolve(__dirname)
+			cwd: path.resolve(__dirname),
+			buffer: false
 		}).
 		pipe(gulpEditorconfigValidate()).
 		on('report', function (report, path) {

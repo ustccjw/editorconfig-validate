@@ -43,14 +43,12 @@ function editorconfigValidate(file, options) {
 	return Promise.all([promiseFile, promiseConfig]).then(function (response) {
 		var contents = response[0]
 		var config = response[1]
-
 		if (Buffer.isBuffer(contents)) {
 			return validate(contents, config)
 		}
 		if (isReadable(contents)) {
 			return new Promise(function (resolve, reject) {
 				var buffers = []
-				contents.setEncoding(null)
 				contents.on('readable', function () {
 					var buffer = contents.read()
 					if (buffer !== null) {
@@ -58,10 +56,17 @@ function editorconfigValidate(file, options) {
 					}
 				})
 				contents.on('end', function () {
-					resolve(validate(Buffer.concat(buffers), config))
+					var report = null
+					try {
+						report = validate(Buffer.concat(buffers), config)
+					} catch (err) {
+						return reject(err)
+					}
+					resolve(report)
 				})
 			})
 		}
+		return Promise.reject(new Error('arguments error: file should be file path or vinyl file'))
 	})
 }
 
